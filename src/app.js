@@ -9,7 +9,7 @@ app.use(cors())
 await sequelize.sync({force:false})
 
 app.get('/', (req, res) => {
-  res.json({msg: 'Hello World!'})
+  res.send("Hello World!")
 })
 
 app.listen(PORT, () => {
