@@ -2,9 +2,9 @@
   "name": "ortsocialhubserver",
   "version": "1.0.0",
   "description": "Server for Ort Social Hub application",
-  "main": "./src/app.js",
+  "main": "./src/index.js",
   "scripts": {
-    "dev": "node --watch --env-file .env .",
+    "dev": "node --watch .",
     "start": "node .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
