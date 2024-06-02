@@ -1,17 +1,13 @@
 import express from 'express';
-import { sequelize } from './db/sequelize.js';
 import cors from 'cors';
-import { PORT } from './config.js';
+import routes from './routes/routes.js';
 
-const app = express()
+const app = express();
 
-app.use(cors())
-await sequelize.sync({force:false})
+app.use(cors());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
-app.get('/', (req, res) => {
-  res.send("Hello World!")
-})
+app.use('/', routes);
 
-app.listen(PORT, () => {
-  console.log(`Example app listening on port ${PORT}`)
-})
+export default app;
