@@ -3,9 +3,14 @@ import { Follower, Post, User } from "../model/models.js";
 export const post = async (req, res) => {
     try {
         console.log(`Saving ${req.body}`);
-        await Post.create(req.body);
+        const post = await Post.create(req.body);
+        const user = await User.findByPk(req.body.UserId, {
+            attributes: ['id', 'firstName', 'lastName']
+        });
         res.status(200).json({
-            success: true
+            success: true,
+            user,
+            post
         });
     } catch (error) {
         console.log(error);
@@ -29,6 +34,27 @@ export const fetchHomeFeed = async (req, res) => {
                 UserId: following
             },
             order: ['createdAt', 'DESC']
+        });
+        res.status(200).json({
+            success: true,
+            posts
+        });
+    } catch(error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            error: "Error while trying to fetch posts"
+        });
+    }
+}
+
+export const fetchProfileFeed = async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const posts = await Post.findAll({
+            where: {
+                UserId: userId
+            }
         });
         res.status(200).json({
             success: true,
