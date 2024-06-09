@@ -2,7 +2,6 @@ import { Follower, Post, User } from "../model/models.js";
 
 export const post = async (req, res) => {
     try {
-        console.log(`Saving ${req.body}`);
         const post = await Post.create(req.body);
         const user = await User.findByPk(req.body.UserId, {
             attributes: ['id', 'firstName', 'lastName']
