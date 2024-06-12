@@ -5,7 +5,7 @@ import { validateToken } from "../middleware/validateToken.js";
 const userRouter = Router();
 
 registerRouter.post('/register', register);
-registerRouter.get('/login', login);
+registerRouter.post('/login', login);
 userRouter.use(validateToken);
 // registerRouter.get('/profile/:id', fetchUsersProfile);
 
