@@ -43,7 +43,11 @@ export const login = async (req, res) => {
         }
         const payload = {
             id: user.id,
-            name: `${user.firstName} ${user.lastName}`
+            user: {
+                id: user.id,
+                firstName: user.firstName,
+                lastName: user.lastName
+            }
         };
         const token = generateToken(payload);
         res.cookie("token", token);
