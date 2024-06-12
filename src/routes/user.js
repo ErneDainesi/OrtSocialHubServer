@@ -4,8 +4,8 @@ import { validateToken } from "../middleware/validateToken.js";
 
 const userRouter = Router();
 
-registerRouter.post('/register', register);
-registerRouter.post('/login', login);
+userRouter.post('/register', register);
+userRouter.post('/login', login);
 userRouter.use(validateToken);
 // registerRouter.get('/profile/:id', fetchUsersProfile);
 
