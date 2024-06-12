@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { post, fetchHomeFeed, fetchProfileFeed } from "../controllers/post.js";
+import { post, fetchHomeFeed, fetchProfileFeed } from "../controllers/posts.js";
 
 const postRouter = Router();
 
