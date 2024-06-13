@@ -1,10 +1,10 @@
 import { Router } from "express";
-import registerRouter from "./register.js";
-import postRouter from "./post.js";
+import postRouter from "./posts.js";
+import userRouter from "./user.js";
 
 const routes = Router();
 
-routes.use('/register', registerRouter);
-routes.use('/post', postRouter);
+routes.use('/user', userRouter);
+routes.use('/posts', postRouter);
 
 export default routes;
