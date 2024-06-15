@@ -8,8 +8,10 @@ export const post = async (req, res) => {
         });
         res.status(200).json({
             success: true,
-            user,
-            post
+            data: {
+                post,
+                user
+            }
         });
     } catch (error) {
         console.log(error);
@@ -55,9 +57,18 @@ export const fetchProfileFeed = async (req, res) => {
                 UserId: userId
             }
         });
+        const user = await User.findByPk(userId, {
+            attributes: ['id', 'firstName', 'lastName']
+        });
+        const resPosts = posts.map(post => {
+            return {
+                post,
+                user
+            };
+        });
         res.status(200).json({
             success: true,
-            posts
+            posts: resPosts
         });
     } catch(error) {
         console.log(error);
