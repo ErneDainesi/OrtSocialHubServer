@@ -55,7 +55,8 @@ export const fetchProfileFeed = async (req, res) => {
         const posts = await Post.findAll({
             where: {
                 UserId: userId
-            }
+            },
+            order: [['createdAt', 'DESC']]
         });
         const user = await User.findByPk(userId, {
             attributes: ['id', 'firstName', 'lastName']
