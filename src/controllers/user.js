@@ -60,7 +60,7 @@ export const login = async (req, res) => {
         });
         res.status(200).send({
             success: true,
-            loggedInUserId: user.id
+            loggedInUserId: JSON.stringify(user.id)
         });
     } catch (error) {
         console.log(error);
