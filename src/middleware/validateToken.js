@@ -2,8 +2,8 @@ import { verifyToken } from "../utils/token.js";
 
 export const validateToken = async (req, res, next) => {
     try {
-        const { jwt_token } = req.cookies;
-        if (!jwt_token) throw new Error("Not logged in");
+        const { token } = req.cookies;
+        if (!token) throw new Error("Not logged in");
         const { payload } = verifyToken(token);
         req.user = payload.user;
         next();

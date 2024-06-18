@@ -1,6 +1,7 @@
 import { compare, hash } from "bcrypt";
 import { User } from "../model/models.js";
 import { generateToken } from "../utils/token.js";
+import { ORIGIN } from "../config.js";
 
 export const register = async (req, res) => {
     try {
@@ -55,7 +56,8 @@ export const login = async (req, res) => {
             }
         };
         const jwt = generateToken(payload);
-        res.cookie("jwt_token", jwt, {
+        res.cookie("token", jwt, {
+            domain: ORIGIN,
             maxAge: 1000 * 60 * 30 // the cookie will live for an hour
         });
         res.status(200).send({
