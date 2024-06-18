@@ -34,7 +34,7 @@ export const fetchHomeFeed = async (req, res) => {
             where: {
                 UserId: following
             },
-            order: ['createdAt', 'DESC']
+            order: [['createdAt', 'DESC']]
         });
         res.status(200).json({
             success: true,
