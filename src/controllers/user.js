@@ -56,10 +56,7 @@ export const login = async (req, res) => {
             }
         };
         const jwt = generateToken(payload);
-        res.cookie("token", jwt, {
-            domain: ORIGIN,
-            maxAge: 1000 * 60 * 30 // the cookie will live for an hour
-        });
+        res.cookie("token", jwt);
         res.status(200).send({
             success: true,
             loggedInUserId: JSON.stringify(user.id)
