@@ -58,7 +58,8 @@ export const login = async (req, res) => {
         res.cookie("jwt_token", jwt, {
             httpOnly: true,
             maxAge: 1000 * 60 * 30, // the cookie will live for an hour
-            sameSite: 'None'
+            sameSite: 'None',
+            secure: true
         });
         res.status(200).send({
             success: true,
