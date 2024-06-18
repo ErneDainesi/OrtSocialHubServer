@@ -1,7 +1,7 @@
 import { compare, hash } from "bcrypt";
 import { User } from "../model/models.js";
 import { generateToken } from "../utils/token.js";
-import { ORIGIN } from "../config.js";
+import { DOMAIN, ORIGIN } from "../config.js";
 
 export const register = async (req, res) => {
     try {
@@ -56,7 +56,12 @@ export const login = async (req, res) => {
             }
         };
         const jwt = generateToken(payload);
-        res.cookie("token", jwt);
+        res.cookie("token", jwt, {
+            httpOnly: true,
+            secure: true,
+            domain: DOMAIN,
+            sameSite: 'None'
+        });
         res.status(200).send({
             success: true,
             loggedInUserId: JSON.stringify(user.id)
