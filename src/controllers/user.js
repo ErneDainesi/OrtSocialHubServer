@@ -57,10 +57,7 @@ export const login = async (req, res) => {
         };
         const jwt = generateToken(payload);
         res.cookie("token", jwt, {
-            httpOnly: true,
-            secure: true,
-            domain: DOMAIN,
-            sameSite: 'None'
+            maxAge: 1000 * 60 * 60 * 24
         });
         res.status(200).send({
             success: true,
