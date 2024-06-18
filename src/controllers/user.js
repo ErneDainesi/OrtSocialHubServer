@@ -57,7 +57,8 @@ export const login = async (req, res) => {
         const jwt = generateToken(payload);
         res.cookie("jwt_token", jwt, {
             httpOnly: true,
-            maxAge: 3600000 // the cookie will live for an hour
+            maxAge: 3600000, // the cookie will live for an hour
+            sameSite: 'Strict'
         });
         res.status(200).send({
             success: true,
