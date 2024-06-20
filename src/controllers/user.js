@@ -75,7 +75,7 @@ export const fetchUsersProfile = async (req, res) => {
     try {
         const { id } = req.params;
         const user = await User.findByPk(id, {
-            attributes: ['id', 'firstName', 'lastName']
+            attributes: ['id', 'firstName', 'lastName', 'profilePicture']
         });
         if (!user) {
             res.status(404).json({
