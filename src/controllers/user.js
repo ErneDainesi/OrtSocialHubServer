@@ -10,7 +10,6 @@ export const register = async (req, res) => {
                 success: false,
                 error: "User with same email exists"
             });
-            return;
         }
         const hashedPass = await hash(req.body.password, 10);
         const user = await User.create({
@@ -39,7 +38,6 @@ export const login = async (req, res) => {
                 success: false,
                 error: "User does not exist"
             });
-            return;
         }
         const validatePassword = await compare(password, user.password);
         if (!validatePassword) {
@@ -47,7 +45,6 @@ export const login = async (req, res) => {
                 success: false,
                 error: "Invalid credentials"
             });
-            return;
         }
         const payload = {
             id: user.id,
@@ -59,12 +56,11 @@ export const login = async (req, res) => {
         };
         const jwt = generateToken(payload);
         res.cookie("token", jwt, {
-            httpOnly: true,
-            maxAge: 3600000 // the cookie will live for an hour
+            maxAge: 1000 * 60 * 60 * 24
         });
         res.status(200).send({
             success: true,
-            loggedInUserId: user.id
+            loggedInUserId: JSON.stringify(user.id)
         });
     } catch (error) {
         console.log(error);
@@ -74,3 +70,28 @@ export const login = async (req, res) => {
         });
     }
 }
+
+export const fetchUsersProfile = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const user = await User.findByPk(id, {
+            attributes: ['id', 'firstName', 'lastName', 'profilePicture']
+        });
+        if (!user) {
+            res.status(404).json({
+                success: false,
+                error: "User not found"
+            });
+        }
+        res.status(200).json({
+            success: true,
+            user
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            error: "Error while trying to fetch users profile"
+        });
+    }
+};

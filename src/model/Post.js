@@ -7,6 +7,10 @@ const Post = sequelize.define(
         text: {
             type: DataTypes.STRING,
             allowNull: false,
+        },
+        attachmentUrl: {
+            type: DataTypes.TEXT,
+            allowNull: true
         }
     }
 );

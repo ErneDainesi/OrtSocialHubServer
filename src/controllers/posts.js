@@ -4,7 +4,7 @@ export const post = async (req, res) => {
     try {
         const post = await Post.create(req.body);
         const user = await User.findByPk(req.body.UserId, {
-            attributes: ['id', 'firstName', 'lastName']
+            attributes: ['id', 'firstName', 'lastName', 'profilePicture']
         });
         res.status(200).json({
             success: true,
@@ -34,7 +34,7 @@ export const fetchHomeFeed = async (req, res) => {
             where: {
                 UserId: following
             },
-            order: ['createdAt', 'DESC']
+            order: [['createdAt', 'DESC']]
         });
         res.status(200).json({
             success: true,
@@ -59,7 +59,7 @@ export const fetchProfileFeed = async (req, res) => {
             order: [['createdAt', 'DESC']]
         });
         const user = await User.findByPk(userId, {
-            attributes: ['id', 'firstName', 'lastName']
+            attributes: ['id', 'firstName', 'lastName', 'profilePicture']
         });
         const resPosts = posts.map(post => {
             return {
