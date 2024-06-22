@@ -20,7 +20,7 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
     try {
         const result = await auth.login(req, res);
-        if (!result.loggedInUserId) {
+        if (!result.success) {
             res.status(500).json(result);
             return;
         }
@@ -37,7 +37,7 @@ export const login = async (req, res) => {
 export const fetchUsersProfile = async (req, res) => {
     try {
         const result = await userService.fetchUsersProfile(req);
-        if (!result.user) {
+        if (!result.success) {
             res.status(404).json(result);
             return;
         }
