@@ -10,6 +10,7 @@ export const register = async (req, res) => {
                 success: false,
                 error: "User with same email exists"
             });
+            return;
         }
         const hashedPass = await hash(req.body.password, 10);
         const user = await User.create({
@@ -36,8 +37,9 @@ export const login = async (req, res) => {
         if (!user) {
             res.status(500).json({
                 success: false,
-                error: "User does not exist"
+                error: "Invalid credentials"
             });
+            return;
         }
         const validatePassword = await compare(password, user.password);
         if (!validatePassword) {
@@ -45,6 +47,7 @@ export const login = async (req, res) => {
                 success: false,
                 error: "Invalid credentials"
             });
+            return;
         }
         const payload = {
             id: user.id,
@@ -82,6 +85,7 @@ export const fetchUsersProfile = async (req, res) => {
                 success: false,
                 error: "User not found"
             });
+            return;
         }
         res.status(200).json({
             success: true,

@@ -8,9 +8,9 @@ export const post = async (req, res) => {
         });
         res.status(200).json({
             success: true,
-            data: {
-                post,
-                user
+            post: {
+                ...post.dataValues,
+                User: user
             }
         });
     } catch (error) {
@@ -25,16 +25,22 @@ export const post = async (req, res) => {
 export const fetchHomeFeed = async (req, res) => {
     try {
         const { userId } = req.params;
-        const following = await Follower.findAll({
+        const userIds = await Follower.findAll({
             where: {
                 followerId: userId
             }
         });
+        userIds.push(userId);
         const posts = await Post.findAll({
             where: {
-                UserId: following
+                UserId: userIds
             },
-            order: [['createdAt', 'DESC']]
+            order: [['createdAt', 'DESC']],
+            include: [{
+                model: User,
+                as: 'User',
+                attributes: ['id', 'firstName', 'lastName', 'profilePicture']
+            }]
         });
         res.status(200).json({
             success: true,
@@ -56,20 +62,16 @@ export const fetchProfileFeed = async (req, res) => {
             where: {
                 UserId: userId
             },
-            order: [['createdAt', 'DESC']]
-        });
-        const user = await User.findByPk(userId, {
-            attributes: ['id', 'firstName', 'lastName', 'profilePicture']
-        });
-        const resPosts = posts.map(post => {
-            return {
-                post,
-                user
-            };
+            order: [['createdAt', 'DESC']],
+            include: [{
+                model: User,
+                as: 'User',
+                attributes: ['id', 'firstName', 'lastName', 'profilePicture']
+            }]
         });
         res.status(200).json({
             success: true,
-            posts: resPosts
+            posts
         });
     } catch(error) {
         console.log(error);
