@@ -1,7 +1,8 @@
-import { User } from "../model/models.js";
 import AuthService from "../services/AuthService.js";
+import UserService from "../services/UserService.js";
 
 const auth = new AuthService();
+const userService = new UserService();
 
 export const register = async (req, res) => {
     try {
@@ -35,21 +36,12 @@ export const login = async (req, res) => {
 
 export const fetchUsersProfile = async (req, res) => {
     try {
-        const { id } = req.params;
-        const user = await User.findByPk(id, {
-            attributes: ['id', 'firstName', 'lastName', 'profilePicture']
-        });
-        if (!user) {
-            res.status(404).json({
-                success: false,
-                error: "User not found"
-            });
+        const result = await userService.fetchUsersProfile(req);
+        if (!result.user) {
+            res.status(404).json(result);
             return;
         }
-        res.status(200).json({
-            success: true,
-            user
-        });
+        res.status(200).json(result);
     } catch (error) {
         console.log(error);
         res.status(500).json({
