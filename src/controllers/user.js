@@ -1,5 +1,5 @@
 import { compare, hash } from "bcrypt";
-import { User } from "../model/models.js";
+import { User, Follower } from "../model/models.js";
 import { generateToken } from "../utils/token.js";
 
 export const register = async (req, res) => {
@@ -96,6 +96,63 @@ export const fetchUsersProfile = async (req, res) => {
         res.status(500).json({
             success: false,
             error: "Error while trying to fetch users profile"
+        });
+    }
+};
+
+export const followUser = async(req, res) =>{
+    try{
+        const followerId = req.user.id;
+        const {userId} = req.params;
+
+        if(followerId === parseInt(userId)){
+            return res.status(400).json({
+                 success: false,
+            error: "Cannot follow yourself"
+            });
+        }
+
+        const follow = await Follower.create({
+            followerId: followerId,
+            followerId: userId
+        });
+
+        req.status(200).json({
+            success: true,
+            follow
+        });
+
+    }catch(error){
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            error: "Error while trying to follow user"
+        });
+    }
+};
+
+export const unfollowUser = async(req, res) =>{
+    try{
+        const followerId = req.user.id;
+        const {userId} = req.params;
+
+        const unfollow = await Follower.destroy({
+            where:{
+                followerId: followerId,
+                followerId: userId
+            }
+        });
+
+        res.status(200).json({
+            succes: true,
+            unfollow
+        });
+    
+    }catch(error){
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            error: "Error while trying to unfollow user"
         });
     }
 };
