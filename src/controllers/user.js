@@ -156,3 +156,27 @@ export const unfollowUser = async(req, res) =>{
         });
     }
 };
+
+export const getFollowers = async (req,res) =>{
+    try{
+        const {userId} = req.params;
+        
+        const followers = await Follower.findAll({
+            where: { followerId: userId},
+            include: [{ model: User, as:'follower', attributes:['id', 'firstName', 'lastName', 'profilePicture'] }]
+        });
+        
+        res.status(200).json({
+            succes: true,
+            followers
+        });
+
+    }catch(error){
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            error: "Error while trying to get followers"
+        });
+    }
+};
+
