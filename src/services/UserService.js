@@ -17,6 +17,33 @@ class UserService {
             user
         };
     }
+
+    async editProfile(newValues) {
+        const {
+            id,
+            firstName,
+            lastName,
+            profilePicture,
+            password
+        } = newValues;
+        const user = await User.findByPk(id);
+        if (!user) {
+            return {
+                succes: false,
+                error: "User not found"
+            };
+        }
+        await user.update({
+            firstName,
+            lastName,
+            profilePicture,
+            password
+        });
+        return {
+            succes: true,
+            user
+        }
+    }
 }
 
 export default UserService;
