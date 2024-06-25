@@ -69,7 +69,7 @@ export const fetchUsersProfile = async (req, res) => {
 export const editUserProfile = async (req, res) => {
     try {
         const result = await userService.editProfile(req.body);
-        if (!result.succes) {
+        if (!result.success) {
             res.status(500).json(result);
             return;
         }

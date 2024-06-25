@@ -28,7 +28,7 @@ class UserService {
         const user = await User.findByPk(id);
         if (!user) {
             return {
-                succes: false,
+                success: false,
                 error: "User not found"
             };
         }
@@ -45,7 +45,7 @@ class UserService {
             });
         }
         return {
-            succes: true,
+            success: true,
             user
         }
     }
