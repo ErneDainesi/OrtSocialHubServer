@@ -35,19 +35,17 @@ export const login = async (req, res) => {
 }
 
 export const logout = (req, res) => {
-    try{
+    try {
         res.clearCookie('token');
         res.status(200).send({
             succes: true,
             message: 'Logged out succes'
         });
-
-    }catch(error){
+    } catch(error) {
         res.status(500).send({
             succes: false,
             message: 'Error while trying to logout'
         });
-
     }
 };
 
