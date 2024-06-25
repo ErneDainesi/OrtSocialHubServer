@@ -9,6 +9,6 @@ try {
     console.log("Couldn't sync db");
 }
 
-App.listen(PORT, () => {
+App.listen(PORT, '0.0.0.0', () => {
   console.log(`Example app listening on port ${PORT}`)
 })
