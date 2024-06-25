@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { register, login, fetchUsersProfile, editUserProfile, logout } from "../controllers/user.js";
 import { validateToken } from "../middleware/validateToken.js";
 import {
     register,
@@ -8,7 +7,8 @@ import {
     logout,
     followUser,
     unfollowUser,
-    getFollowing
+    getFollowing,
+    editUserProfile
 } from "../controllers/user.js";
 
 const userRouter = Router();
