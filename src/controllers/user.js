@@ -1,9 +1,11 @@
 import { User, Follower } from "../model/models.js";
 import AuthService from "../services/AuthService.js";
+import FollowerService from "../services/FollowerService.js";
 import UserService from "../services/UserService.js";
 
 const auth = new AuthService();
 const userService = new UserService();
+const followerService = new FollowerService();
 
 export const register = async (req, res) => {
     try {
@@ -39,12 +41,12 @@ export const logout = (req, res) => {
     try {
         res.clearCookie('token');
         res.status(200).send({
-            succes: true,
-            message: 'Logged out succes'
+            success: true,
+            message: 'Logged out success'
         });
     } catch(error) {
         res.status(500).send({
-            succes: false,
+            success: false,
             message: 'Error while trying to logout'
         });
     }
@@ -67,29 +69,12 @@ export const fetchUsersProfile = async (req, res) => {
     }
 };
 
-export const followUser = async(req, res) =>{
-    try{
-        const followerId = req.user.id;
-        const {userId} = req.params;
-
-        if(followerId === parseInt(userId)){
-            return res.status(400).json({
-                 success: false,
-            error: "Cannot follow yourself"
-            });
-        }
-
-        const follow = await Follower.create({
-            followerId: followerId,
-            followerId: userId
-        });
-
-        req.status(200).json({
-            success: true,
-            follow
-        });
-
-    }catch(error){
+export const followUser = async(req, res) => {
+    try {
+        const result = await followerService.follow(req.body);
+        const status = result.success ? 200 : 400;
+        res.status(status).json(result);
+    } catch(error) {
         console.log(error);
         res.status(500).json({
             success: false,
@@ -98,24 +83,11 @@ export const followUser = async(req, res) =>{
     }
 };
 
-export const unfollowUser = async(req, res) =>{
-    try{
-        const followerId = req.user.id;
-        const {userId} = req.params;
-
-        const unfollow = await Follower.destroy({
-            where:{
-                followerId: followerId,
-                followerId: userId
-            }
-        });
-
-        res.status(200).json({
-            succes: true,
-            unfollow
-        });
-    
-    }catch(error){
+export const unfollowUser = async(req, res) => {
+    try {
+        const result = await followerService.unfollow(req.body);
+        res.status(200).json(result);
+    } catch(error) {
         console.log(error);
         res.status(500).json({
             success: false,
@@ -124,21 +96,12 @@ export const unfollowUser = async(req, res) =>{
     }
 };
 
-export const getFollowers = async (req,res) =>{
-    try{
-        const {userId} = req.params;
-        
-        const followers = await Follower.findAll({
-            where: { followerId: userId},
-            include: [{ model: User, as:'follower', attributes:['id', 'firstName', 'lastName', 'profilePicture'] }]
-        });
-        
-        res.status(200).json({
-            succes: true,
-            followers
-        });
-
-    }catch(error){
+export const getFollowing = async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const result = await followerService.getFollowed(userId);
+        res.status(200).json(result);
+    } catch(error) {
         console.log(error);
         res.status(500).json({
             success: false,
