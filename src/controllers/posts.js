@@ -18,8 +18,7 @@ export const post = async (req, res) => {
 
 export const fetchHomeFeed = async (req, res) => {
     try {
-        const { userId } = req.params;
-        const result = await postService.fetchHomeFeed(userId);
+        const result = await postService.fetchHomeFeed();
         res.status(200).json(result);
     } catch(error) {
         console.log(error);
