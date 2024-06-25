@@ -1,18 +1,12 @@
-import { Follower, Post, User } from "../model/models.js";
+import PostService from "../services/PostService.js";
+
+const postService = new PostService();
 
 export const post = async (req, res) => {
     try {
-        const post = await Post.create(req.body);
-        const user = await User.findByPk(req.body.UserId, {
-            attributes: ['id', 'firstName', 'lastName', 'profilePicture']
-        });
-        res.status(200).json({
-            success: true,
-            data: {
-                post,
-                user
-            }
-        });
+        const result = await postService.post(req.body);
+        const status = result.success ? 200 : 404;
+        res.status(status).json(result);
     } catch (error) {
         console.log(error);
         res.status(500).json({
@@ -25,26 +19,13 @@ export const post = async (req, res) => {
 export const fetchHomeFeed = async (req, res) => {
     try {
         const { userId } = req.params;
-        const following = await Follower.findAll({
-            where: {
-                followerId: userId
-            }
-        });
-        const posts = await Post.findAll({
-            where: {
-                UserId: following
-            },
-            order: [['createdAt', 'DESC']]
-        });
-        res.status(200).json({
-            success: true,
-            posts
-        });
+        const result = await postService.fetchHomeFeed(userId);
+        res.status(200).json(result);
     } catch(error) {
         console.log(error);
         res.status(500).json({
             success: false,
-            error: "Error while trying to fetch posts"
+            error: "Error while trying to fetch home feed"
         });
     }
 }
@@ -52,30 +33,13 @@ export const fetchHomeFeed = async (req, res) => {
 export const fetchProfileFeed = async (req, res) => {
     try {
         const { userId } = req.params;
-        const posts = await Post.findAll({
-            where: {
-                UserId: userId
-            },
-            order: [['createdAt', 'DESC']]
-        });
-        const user = await User.findByPk(userId, {
-            attributes: ['id', 'firstName', 'lastName', 'profilePicture']
-        });
-        const resPosts = posts.map(post => {
-            return {
-                post,
-                user
-            };
-        });
-        res.status(200).json({
-            success: true,
-            posts: resPosts
-        });
+        const result = await postService.fetchProfileFeed(userId);
+        res.status(200).json(result);
     } catch(error) {
         console.log(error);
         res.status(500).json({
             success: false,
-            error: "Error while trying to fetch posts"
+            error: "Error while trying to fetch profile feed"
         });
     }
 }
