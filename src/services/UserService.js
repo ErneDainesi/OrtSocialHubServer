@@ -4,7 +4,7 @@ class UserService {
     async fetchUsersProfile(req) {
         const { id } = req.params;
         const user = await User.findByPk(id, {
-            attributes: ['id', 'firstName', 'lastName', 'profilePicture']
+            attributes: ['id', 'firstName', 'lastName', 'profilePicture', 'email']
         });
         if (!user) {
             return {
@@ -23,8 +23,7 @@ class UserService {
             id,
             firstName,
             lastName,
-            profilePicture,
-            password
+            profilePicture
         } = newValues;
         const user = await User.findByPk(id);
         if (!user) {
@@ -33,12 +32,18 @@ class UserService {
                 error: "User not found"
             };
         }
-        await user.update({
-            firstName,
-            lastName,
-            profilePicture,
-            password
-        });
+        if (user.profilePicture !== profilePicture) {
+            await user.update({
+                firstName,
+                lastName,
+                profilePicture
+            });
+        } else {
+            await user.update({
+                firstName,
+                lastName,
+            });
+        }
         return {
             succes: true,
             user
