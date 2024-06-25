@@ -6,7 +6,7 @@ const postRouter = Router();
 
 postRouter.use(validateToken);
 postRouter.post('/', post);
-postRouter.get('/home/:userId', fetchHomeFeed);
+postRouter.get('/home', fetchHomeFeed);
 postRouter.get('/profile/:userId', fetchProfileFeed);
 
 export default postRouter;
