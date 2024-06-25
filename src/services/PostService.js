@@ -21,17 +21,8 @@ class PostService {
         };
     }
     
-    async fetchHomeFeed(userId) {
-        const userIds = await Follower.findAll({
-            where: {
-                followerId: userId
-            }
-        });
-        userIds.push(userId);
+    async fetchHomeFeed() {
         const posts = await Post.findAll({
-            where: {
-                UserId: userIds
-            },
             order: [['createdAt', 'DESC']],
             include: [{
                 model: User,
