@@ -7,18 +7,18 @@ import {
     logout,
     followUser,
     unfollowUser,
-    getFollowers
+    getFollowing
 } from "../controllers/user.js";
 
 const userRouter = Router();
 
 userRouter.post('/register', register);
 userRouter.post('/login', login);
-userRouter.post('/follow/:userId', followUser );
-userRouter.post('/unfollow/:userId', unfollowUser);
 userRouter.use(validateToken);
 userRouter.post('/logout', logout);
 userRouter.get('/profile/:id', fetchUsersProfile);
-userRouter.get('/followers/:userId', getFollowers);
+userRouter.post('/follow', followUser );
+userRouter.post('/unfollow', unfollowUser);
+userRouter.get('/followers/:userId', getFollowing);
 
 export default userRouter;
