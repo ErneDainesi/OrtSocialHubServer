@@ -110,3 +110,19 @@ export const getFollowing = async (req, res) => {
     }
 };
 
+export const editUserProfile = async (req, res) => {
+    try {
+        const result = await userService.editProfile(req.body);
+        if (!result.success) {
+            res.status(500).json(result);
+            return;
+        }
+        res.status(200).json(result);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            error: "Error while trying to fetch users profile"
+        });
+    }
+};
