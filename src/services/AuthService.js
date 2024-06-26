@@ -22,7 +22,7 @@ class AuthService {
         };
     }
 
-    async login(req, res) {
+    async login(req) {
         const {email, password} = req.body;
         const user = await User.findOne({ where: { email } });
         if (!user) {
@@ -47,12 +47,10 @@ class AuthService {
             }
         };
         const jwt = generateToken(payload);
-        res.cookie("token", jwt, {
-            maxAge: 1000 * 60 * 60 * 24
-        });
         return {
             success: true,
-            loggedInUserId: JSON.stringify(user.id)
+            loggedInUserId: JSON.stringify(user.id),
+            token: jwt
         };
     }
 }

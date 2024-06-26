@@ -37,21 +37,6 @@ export const login = async (req, res) => {
     }
 }
 
-export const logout = (req, res) => {
-    try {
-        res.clearCookie('token');
-        res.status(200).send({
-            success: true,
-            message: 'Logged out success'
-        });
-    } catch(error) {
-        res.status(500).send({
-            success: false,
-            message: 'Error while trying to logout'
-        });
-    }
-};
-
 export const fetchUsersProfile = async (req, res) => {
     try {
         const result = await userService.fetchUsersProfile(req);

@@ -52,7 +52,7 @@ Subroutes:
 - `/user/profile/:id`: GET used for getting a users profile.
 - `/user/profile`: PUT used for updating data of users profile
 - `/user/follow`: POST registers in the database that a user is following another user
-- `/user/unfollow`: POST deletes the entry in the database that register that a user follows another user
+- `/user/unfollow`: DELETE deletes the entry in the database that register that a user follows another user
 - `/user/followers/:userId`: GET gets the people that the current user is following
 
 - `/posts`: POST used for saveing a new post
