@@ -43,3 +43,4 @@ We've added some security measures to make our app a safe one.
 - Password encryption using bcrypt.
 - Use of enviromental variables to avoid exposing passwords, api keys or database credentials.
 - Use of Json Web Token to maintain user session and avoid vulnerabilities.
+- This server is deployed at https://railway.app/ this way, each time we do a request to our server, we do it via HTTPS. Making the comunication between server and client secure.
